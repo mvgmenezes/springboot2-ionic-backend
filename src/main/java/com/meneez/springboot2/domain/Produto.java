@@ -12,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Produto implements Serializable{
 	
@@ -31,6 +34,9 @@ public class Produto implements Serializable{
 	//com isso preciso informar que é uma relacionamento de many to many
 	//JoinTable que informa as chaves estrangeiras
 	//joinColumns informar o nome de referencia dentro de produtos e inversejoinColumns informa o nome de referencia na outra tabela categoria
+	//@JsonBackReference - para resolver a referencia ciclica, no outro objeto Produto ja informei que JsonManagedReference logo 
+	//o compilador ja sabe para nao executar ciclico.
+	@JsonBackReference
 	@ManyToMany
 	@JoinTable(name= "PRODUTO_CATEGORIA", 
 				joinColumns = @JoinColumn(name = "produto_id"),

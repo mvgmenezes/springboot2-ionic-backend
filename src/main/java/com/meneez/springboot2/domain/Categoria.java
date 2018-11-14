@@ -8,9 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Categoria implements Serializable{
@@ -28,6 +28,9 @@ public class Categoria implements Serializable{
 	//como o produto tem varias categorias e categoria tem varios produtos é uma relacionamento de muitos para muitos (N : N)
 	//com isso preciso informar que é uma relacionamento de many to many
 	//como na classe produto já realizei o mapeamento many to many e os joincolumns aqui somente referencio
+	//JsonManagedReference = é para evitar a referencia ciclica(quando a serializacao vai ocorrer como um esta um objeto(produtos e categoria) dentro de outro
+	//o compilador ficar ciclico
+	@JsonManagedReference
 	@ManyToMany(mappedBy="categorias")
 	private List<Produto> produtos = new ArrayList<>();
 	

@@ -30,20 +30,11 @@ public class CategoriaResource {
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		
+		//Foi criado um Handler (ResourceExceptionHandler.class) que é um objeto que vai interceptar o bloco caso ocorra uma excecao,
+		//do tipo definido por mim ObjectNotFondException (caso nao encontrou nenhum objeto com o id enviado)
 		Categoria obj = service.buscar(id);
-		
 		return ResponseEntity.ok().body(obj);
-		
-		/*
-		Categoria cat1 = new Categoria(1, "Informática");
-		Categoria cat2 = new Categoria(2, "Escritorio");
-		
-		List<Categoria> lista = new ArrayList<>();
-		lista.add(cat1);
-		lista.add(cat2);
-		
-		return lista;
-		*/
+
 	}
 
 }
