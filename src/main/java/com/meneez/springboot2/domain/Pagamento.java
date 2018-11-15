@@ -3,8 +3,6 @@ package com.meneez.springboot2.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -21,8 +19,9 @@ import com.meneez.springboot2.domain.enums.EstadoPagamento;
 //uma tabela de PagamentoComCartao e quando pesquisar os pagamento deve ser feito o join das tabelas - (Usado quando tem muitos atribuitos na subclasse)
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-public class Pagamento implements Serializable {
-
+public abstract class Pagamento implements Serializable {
+//classe definida como abstract para garantir que nao se possa instanciar uma classe do tipo pagamento e somente 
+//suas subclasses
 	
 	/**
 	 * 
@@ -31,11 +30,11 @@ public class Pagamento implements Serializable {
 	//o id do pagamento é o mesmo id do pedido correspondente (relacionamento de 1 para 1 no banco de dados)
 	@Id
 	private Integer id;
-	private EstadoPagamento estado;
+	private Integer estado;
 	
 	//o id do pagamento é o mesmo id do pedido correspondente (relacionamento de 1 para 1 no banco de dados)
 	@OneToOne
-	@JoinColumn(name="pedido_id")
+	@JoinColumn(name="pedido_id") //chave estrangeira na tabela de Pagamento
 	@MapsId
 	private Pedido pedido;
 	
@@ -49,7 +48,7 @@ public class Pagamento implements Serializable {
 	public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
 		super();
 		this.id = id;
-		this.estado = estado;
+		this.estado = estado.getCod();
 		this.setPedido(pedido);
 	}
 
@@ -63,11 +62,11 @@ public class Pagamento implements Serializable {
 	}
 
 	public EstadoPagamento getEstado() {
-		return estado;
+		return EstadoPagamento.toEnum(estado);
 	}
 
 	public void setEstado(EstadoPagamento estado) {
-		this.estado = estado;
+		this.estado = estado.getCod();
 	}
 
 	public Pedido getPedido() {

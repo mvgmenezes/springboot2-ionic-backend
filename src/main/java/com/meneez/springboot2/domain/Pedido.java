@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 @Entity
 public class Pedido implements Serializable{
@@ -23,17 +25,24 @@ public class Pedido implements Serializable{
 	private Integer id;
 	private Date instante;
 	
-	private Pedido pedido;
 	
-	private Cliente cliente;
-	
-	private Endereco enderecoDeEntrega;
-	
-	//Pedido tem um pagamento
+		
+	//Um para Um Pedido e Cliente
 	////o id do pagamento é o mesmo id do pedido correspondente (relacionamento de 1 para 1 no banco de dados)
 	//ja foi realizada a referencia na classe pagamento e aqui deve ser feito o relacionamento bidirecional(mappedBy="pedido")
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido")
 	private Pagamento pagamento;
+	
+	//Relacionamento bidirecional precisa fazer a referencia em cliente
+	//Um pedido tem um cliente
+	@ManyToOne
+	@JoinColumn(name="cliente_id") //nome da chave estrangeira na tabela de Pedido
+	private Cliente cliente;
+	
+	//relacionamento DIrecional, nao tem que fazer a referencia em Endereco
+	@ManyToOne
+	@JoinColumn(name="endereco_de_entrega_id")//nome da chave estrangeira na tabela de Pedido
+	private Endereco enderecoDeEntrega;
 	
 	public Pedido() {
 		
@@ -41,15 +50,15 @@ public class Pedido implements Serializable{
 
 	
 
-	public Pedido(Integer id, Date instante, Pedido pedido, Cliente cliente, Endereco enderecoDeEntrega,
-			Pagamento pagamento) {
+	public Pedido(Integer id, Date instante, Cliente cliente, Endereco enderecoDeEntrega
+			) {
 		super();
 		this.id = id;
 		this.instante = instante;
-		this.pedido = pedido;
 		this.cliente = cliente;
 		this.enderecoDeEntrega = enderecoDeEntrega;
-		this.pagamento = pagamento;
+		//nem sempre um pedido tem um pagamento de imediato
+		//this.pagamento = pagamento;
 	}
 
 
@@ -79,19 +88,6 @@ public class Pedido implements Serializable{
 	}
 	
 	
-
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
-
-
-
 	public Cliente getCliente() {
 		return cliente;
 	}

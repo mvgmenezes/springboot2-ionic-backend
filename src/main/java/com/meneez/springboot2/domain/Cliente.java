@@ -53,6 +53,8 @@ public class Cliente implements Serializable{
 	
 	
 	//Clitem tem uma lista de pedidos
+	//Ja mapeado na classe cliente mappedBy="cliente"
+	@OneToMany(mappedBy="cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	
 	

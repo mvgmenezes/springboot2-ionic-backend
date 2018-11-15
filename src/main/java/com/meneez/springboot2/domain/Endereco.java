@@ -32,11 +32,11 @@ public class Endereco implements Serializable{
 	//@JsonBackReference = Evitando a referencia cliclica, Enderecos não pode serializar os clientes pois os clientes podem serializar os seus enderecos. 
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name="cliente_id")
+	@JoinColumn(name="cliente_id") //nome da chave estrangeira na tabela Endereco
 	private Cliente cliente;
 	
 	@ManyToOne
-	@JoinColumn(name="cidade_id")
+	@JoinColumn(name="cidade_id") //nome da chave estrangeira na tabela Endereco
 	private Cidade cidade;
 	
 	

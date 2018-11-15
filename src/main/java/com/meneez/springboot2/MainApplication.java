@@ -1,5 +1,6 @@
 package com.meneez.springboot2;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.meneez.springboot2.domain.Cidade;
 import com.meneez.springboot2.domain.Cliente;
 import com.meneez.springboot2.domain.Endereco;
 import com.meneez.springboot2.domain.Estado;
+import com.meneez.springboot2.domain.Pagamento;
+import com.meneez.springboot2.domain.PagamentoComBoleto;
+import com.meneez.springboot2.domain.PagamentoComCartao;
+import com.meneez.springboot2.domain.Pedido;
 import com.meneez.springboot2.domain.Produto;
+import com.meneez.springboot2.domain.enums.EstadoPagamento;
 import com.meneez.springboot2.domain.enums.TipoCliente;
 import com.meneez.springboot2.repositories.CategoriaRepository;
 import com.meneez.springboot2.repositories.CidadeRepository;
 import com.meneez.springboot2.repositories.ClienteRepository;
 import com.meneez.springboot2.repositories.EnderecoRepository;
 import com.meneez.springboot2.repositories.EstadoRepository;
+import com.meneez.springboot2.repositories.PagamentoRepository;
+import com.meneez.springboot2.repositories.PedidoRepository;
 import com.meneez.springboot2.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -41,6 +49,12 @@ public class MainApplication implements CommandLineRunner{
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(MainApplication.class, args);
@@ -91,6 +105,7 @@ public class MainApplication implements CommandLineRunner{
 		
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
+		//Criando o cliente e seus enderecos
 		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com","123123123", TipoCliente.PESSOAFISICA);
 		
 		cli1.getTelefones().addAll(Arrays.asList("22222333", "988899889"));
@@ -103,5 +118,24 @@ public class MainApplication implements CommandLineRunner{
 		
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		
+		//Criando os pedidos
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+		
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:00"), cli1, e2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 11:02"), null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
 	}
 }
