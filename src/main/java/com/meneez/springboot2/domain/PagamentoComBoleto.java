@@ -2,8 +2,10 @@ package com.meneez.springboot2.domain;
 
 import java.util.Date;
 
-import com.meneez.springboot2.domain.enums.EstadoPagamento;
+import javax.persistence.Entity;
 
+import com.meneez.springboot2.domain.enums.EstadoPagamento;
+@Entity
 public class PagamentoComBoleto extends Pagamento{
 	
 	/**

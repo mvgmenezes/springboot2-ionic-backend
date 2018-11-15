@@ -1,7 +1,10 @@
 package com.meneez.springboot2.domain;
 
+import javax.persistence.Entity;
+
 import com.meneez.springboot2.domain.enums.EstadoPagamento;
 
+@Entity
 public class PagamentoComCartao extends Pagamento{
 	
 	/**

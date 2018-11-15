@@ -6,13 +6,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.meneez.springboot2.domain.enums.EstadoPagamento;
 
+//@Inheritance = mapeando a heranca, pode ser realizado de duas maneira:
+//1- InheritanceType.SINGLE_TABLE - criar uma unica tabela no banco de dados com os dados de PagamentoComBoleto e PagamentoComCartao e na recuperacao desses
+//itens um objeto vem preenchido e o outro null - (Usado quando tem poucos atributos na subclasse)
+//2 - InheritanceType.JOINED - Outra estrategia é criar no banco de dados uma tabela para cada subclasse, uma tabela de Pagamento, uma tabela de PagamentoComBoleto e
+//uma tabela de PagamentoComCartao e quando pesquisar os pagamento deve ser feito o join das tabelas - (Usado quando tem muitos atribuitos na subclasse)
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Pagamento implements Serializable {
 
 	
