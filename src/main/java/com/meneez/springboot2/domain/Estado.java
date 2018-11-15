@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Estado implements Serializable{
 	
@@ -27,7 +29,10 @@ public class Estado implements Serializable{
 	//na classe que tem um objeto foi colocado a anotacao manytoone e nessa classe que tem muitos foi colocado onetomany (referencia inversa)
 	//mapear o lado inverso
 	//para o JPA eh preciso realizar o mesmo mapeamento aqui e informar a referencia no outro objeto através de mappedBy
-	//como é na tabela cidade que será criado a fk estado_id, aqui deve referenciar o principal mapeamento na tabela cidade
+	//como é na tabela cidade que será criado a fk estado_id, aqui deve referenciar o principal mapeamento na tabela cidade	
+	//@JsonManagedReference = Evitando referencia ciclica - Cidade pode serializar seus estados, mas estados nao pode serializar suas cidades, por conta do negocio e ser mais importante
+	//Cidade conhecer seus estados.
+	@JsonBackReference
 	@OneToMany(mappedBy="estado")	
 	private List<Cidade> cidades = new ArrayList<>();
 	

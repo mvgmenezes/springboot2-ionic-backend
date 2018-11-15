@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.meneez.springboot2.domain.enums.TipoCliente;
 
 @Entity
@@ -36,6 +37,9 @@ public class Cliente implements Serializable{
 	
 	//um cliente tem varios endereços
 	//mappedBy="cliente" ja mapeado na classe cliente
+	//JsonManagedReference (protegendo a referencia ciclica) = liberando a serializacao de seus enderecos e protegendo a classe cliente de ter referencia ciclica com enderecos, pois o mais importante é cliente 
+	//pois cliente tem endereços. Clientes pode serializar os seus endereços, porém o Endereço não pode serializar seus clientes
+	@JsonManagedReference
 	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	

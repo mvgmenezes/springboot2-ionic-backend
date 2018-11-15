@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Cidade implements Serializable{
 	
@@ -25,6 +27,9 @@ public class Cidade implements Serializable{
 	//Cidade tem um estado (no caso de ja ser uma cidade cadastrada)
 	//ou seja Muitas cidades(many) para um estado(toOne)
 	//como é na tabela cidade que será criado a fk estado_id, aqui é o principal mapeamento
+	//@JsonManagedReference = Evitando referencia ciclica - Cidade pode serializar seus estados, mas estados nao pode serializar suas cidades, por conta do negocio e ser mais importante
+	//Cidade conhecer seus estados.
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name="estado_id")
 	private Estado estado;
