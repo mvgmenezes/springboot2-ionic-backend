@@ -14,8 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.meneez.springboot2.domain.enums.TipoCliente;
 
 @Entity
@@ -40,7 +39,7 @@ public class Cliente implements Serializable{
 	//mappedBy="cliente" ja mapeado na classe cliente
 	//JsonManagedReference (protegendo a referencia ciclica) = liberando a serializacao de seus enderecos e protegendo a classe cliente de ter referencia ciclica com enderecos, pois o mais importante é cliente 
 	//pois cliente tem endereços. Clientes pode serializar os seus endereços, porém o Endereço não pode serializar seus clientes
-	@JsonManagedReference
+	//@JsonManagedReference - nao usado por dar bug na app, usado o jsonignore na classe de referencia somente
 	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
@@ -56,7 +55,8 @@ public class Cliente implements Serializable{
 	//Clitem tem uma lista de pedidos
 	//Ja mapeado na classe cliente mappedBy="cliente"
 	//JsonBackReference - os pedidos de um cliente nao vao ser serializados no json
-	@JsonBackReference
+	//@JsonBackReference - trocado por jsonignore pois esta anotations esta dando erro 
+	@JsonIgnore
 	@OneToMany(mappedBy="cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	

@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Endereco implements Serializable{
@@ -30,7 +30,8 @@ public class Endereco implements Serializable{
 	
 	//endereco tem um cliente
 	//@JsonBackReference = Evitando a referencia cliclica, Enderecos não pode serializar os clientes pois os clientes podem serializar os seus enderecos. 
-	@JsonBackReference
+	//@JsonBackReference - trocado por jsonignore pois esta anotations esta dando erro 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="cliente_id") //nome da chave estrangeira na tabela Endereco
 	private Cliente cliente;

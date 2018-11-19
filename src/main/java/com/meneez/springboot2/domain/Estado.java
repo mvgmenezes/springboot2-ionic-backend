@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Estado implements Serializable{
@@ -32,7 +32,8 @@ public class Estado implements Serializable{
 	//como é na tabela cidade que será criado a fk estado_id, aqui deve referenciar o principal mapeamento na tabela cidade	
 	//@JsonManagedReference = Evitando referencia ciclica - Cidade pode serializar seus estados, mas estados nao pode serializar suas cidades, por conta do negocio e ser mais importante
 	//Cidade conhecer seus estados.
-	@JsonBackReference
+	//@JsonBackReference - trocado por jsonignore pois esta anotations esta dando erro 
+	@JsonIgnore
 	@OneToMany(mappedBy="estado")	
 	private List<Cidade> cidades = new ArrayList<>();
 	

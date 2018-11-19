@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 public class Cidade implements Serializable{
 	
@@ -29,7 +27,7 @@ public class Cidade implements Serializable{
 	//como é na tabela cidade que será criado a fk estado_id, aqui é o principal mapeamento
 	//@JsonManagedReference = Evitando referencia ciclica - Cidade pode serializar seus estados, mas estados nao pode serializar suas cidades, por conta do negocio e ser mais importante
 	//Cidade conhecer seus estados.
-	@JsonManagedReference
+	//@JsonManagedReference - nao usado por dar bug na app, usado o jsonignore na classe de referencia somente
 	@ManyToOne
 	@JoinColumn(name="estado_id")
 	private Estado estado;

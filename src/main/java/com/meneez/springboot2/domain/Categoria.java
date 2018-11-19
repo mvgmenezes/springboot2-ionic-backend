@@ -10,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 public class Categoria implements Serializable{
 	
@@ -30,7 +28,7 @@ public class Categoria implements Serializable{
 	//como na classe produto já realizei o mapeamento many to many e os joincolumns aqui somente referencio
 	//JsonManagedReference = é para evitar a referencia ciclica(quando a serializacao vai ocorrer como um esta um objeto(produtos e categoria) dentro de outro
 	//o compilador ficar ciclico
-	@JsonManagedReference
+	//@JsonManagedReference - nao usado por dar bug na app, usado o jsonignore na classe de referencia somente
 	@ManyToMany(mappedBy="categorias")
 	private List<Produto> produtos = new ArrayList<>();
 	

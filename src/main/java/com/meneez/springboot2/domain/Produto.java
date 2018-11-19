@@ -15,7 +15,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -39,7 +38,8 @@ public class Produto implements Serializable{
 	//joinColumns informar o nome de referencia dentro de produtos e inversejoinColumns informa o nome de referencia na outra tabela categoria
 	//@JsonBackReference - para resolver a referencia ciclica, no outro objeto Produto ja informei que JsonManagedReference logo 
 	//o compilador ja sabe para nao executar ciclico.
-	@JsonBackReference
+	//@JsonBackReference - trocado por jsonignore pois esta anotations esta dando erro 
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name= "PRODUTO_CATEGORIA", 
 				joinColumns = @JoinColumn(name = "produto_id"),
