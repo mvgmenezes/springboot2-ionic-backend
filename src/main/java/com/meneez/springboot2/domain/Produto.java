@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Produto implements Serializable{
@@ -50,6 +51,8 @@ public class Produto implements Serializable{
 	//Produto conhece os itens associados a ele
 	//em ItemPedidoPK foi relaizado a associacao ManytoOne de produto, aqui deve ser feito a associacao inversa 
 	//usando o id.produto, onde id é da classe ItemPedido e .produto é da classe ItemPedidoPK
+	//JsonIgnore - nao é importante saber a partir de um produto seus itens, pois é mais interessante saber a partir de uma lista de itens seus produtos
+	@JsonIgnore
 	@OneToMany(mappedBy="id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();
 	
@@ -65,6 +68,8 @@ public class Produto implements Serializable{
 	}
 	
 	//Um produto conhece os pedidos dele.
+	//JsonIgnore - nao é importante saber a partir de um produto seus itens, pois é mais interessante saber a partir de uma lista de itens seus produtos
+	@JsonIgnore
 	public List<Pedido> getPedidos(){
 		
 		List<Pedido> lista = new ArrayList<>();

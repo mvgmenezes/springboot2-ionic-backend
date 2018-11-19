@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.meneez.springboot2.domain.enums.TipoCliente;
 
@@ -54,6 +55,8 @@ public class Cliente implements Serializable{
 	
 	//Clitem tem uma lista de pedidos
 	//Ja mapeado na classe cliente mappedBy="cliente"
+	//JsonBackReference - os pedidos de um cliente nao vao ser serializados no json
+	@JsonBackReference
 	@OneToMany(mappedBy="cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	

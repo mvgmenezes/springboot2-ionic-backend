@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ItemPedido implements Serializable{
 	
@@ -16,6 +18,8 @@ public class ItemPedido implements Serializable{
 	//Esta é uma classe de associacao entre produto e pedido, onde as chave primaria desta tabela é uma 
 	//chave composta (fk produto + fk pedido), para isso se cria uma classe auxiliar ItemPedidoPK - Usa-se a anotacao
 	//Embeddable para dizer que a classe é um subtipo e para este campo o EmbeddedId
+	//@JsonIgnore - O itemPedidoPK nao deve ser serializado pois é utilizado somente internamente para referenciar duas pks
+	@JsonIgnore
 	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();
 	
@@ -36,10 +40,14 @@ public class ItemPedido implements Serializable{
 		this.preco = preco;
 	}
 	
+	
+	//ignorar para nao serializar esses itens 
+	@JsonIgnore
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
 	
+
 	public Produto getProduto() {
 		return id.getProduto();
 	}

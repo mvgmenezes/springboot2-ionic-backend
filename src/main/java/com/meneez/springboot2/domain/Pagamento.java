@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.meneez.springboot2.domain.enums.EstadoPagamento;
 
 //@Inheritance = mapeando a heranca, pode ser realizado de duas maneira:
@@ -33,6 +34,8 @@ public abstract class Pagamento implements Serializable {
 	private Integer estado;
 	
 	//o id do pagamento é o mesmo id do pedido correspondente (relacionamento de 1 para 1 no banco de dados)
+	//@JsonBackReference - nao permitindo a serilizacao desse componente (evitando a referencia ciclica)
+	@JsonBackReference
 	@OneToOne
 	@JoinColumn(name="pedido_id") //chave estrangeira na tabela de Pagamento
 	@MapsId

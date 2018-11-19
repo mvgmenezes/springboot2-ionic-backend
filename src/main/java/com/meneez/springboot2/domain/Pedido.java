@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 public class Pedido implements Serializable{
 	
@@ -26,6 +29,8 @@ public class Pedido implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+	
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date instante;
 	
 	
@@ -33,11 +38,15 @@ public class Pedido implements Serializable{
 	//Um para Um Pedido e Cliente
 	////o id do pagamento é o mesmo id do pedido correspondente (relacionamento de 1 para 1 no banco de dados)
 	//cascade=CascadeType.ALL ja foi realizada a referencia na classe pagamento e aqui deve ser feito o relacionamento bidirecional(mappedBy="pedido")
+	//@JsonManagedReference - Pagamento pode ser serializado (evitando a referencia ciclica)
+	@JsonManagedReference
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido")
 	private Pagamento pagamento;
 	
 	//Relacionamento bidirecional precisa fazer a referencia em cliente
 	//Um pedido tem um cliente
+	//JsonManagedReference - (referencia ciclica) o cliente de um pedido será serailziado
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name="cliente_id") //nome da chave estrangeira na tabela de Pedido
 	private Cliente cliente;
