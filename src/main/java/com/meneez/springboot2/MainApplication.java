@@ -13,6 +13,7 @@ import com.meneez.springboot2.domain.Cidade;
 import com.meneez.springboot2.domain.Cliente;
 import com.meneez.springboot2.domain.Endereco;
 import com.meneez.springboot2.domain.Estado;
+import com.meneez.springboot2.domain.ItemPedido;
 import com.meneez.springboot2.domain.Pagamento;
 import com.meneez.springboot2.domain.PagamentoComBoleto;
 import com.meneez.springboot2.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.meneez.springboot2.repositories.CidadeRepository;
 import com.meneez.springboot2.repositories.ClienteRepository;
 import com.meneez.springboot2.repositories.EnderecoRepository;
 import com.meneez.springboot2.repositories.EstadoRepository;
+import com.meneez.springboot2.repositories.ItemPedidoRepository;
 import com.meneez.springboot2.repositories.PagamentoRepository;
 import com.meneez.springboot2.repositories.PedidoRepository;
 import com.meneez.springboot2.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class MainApplication implements CommandLineRunner{
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(MainApplication.class, args);
@@ -137,5 +142,19 @@ public class MainApplication implements CommandLineRunner{
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		
+		//criando os itens de pedido
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
 	}
 }

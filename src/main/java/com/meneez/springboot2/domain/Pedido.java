@@ -2,6 +2,8 @@ package com.meneez.springboot2.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 @Entity
 public class Pedido implements Serializable{
@@ -29,7 +32,7 @@ public class Pedido implements Serializable{
 		
 	//Um para Um Pedido e Cliente
 	////o id do pagamento é o mesmo id do pedido correspondente (relacionamento de 1 para 1 no banco de dados)
-	//ja foi realizada a referencia na classe pagamento e aqui deve ser feito o relacionamento bidirecional(mappedBy="pedido")
+	//cascade=CascadeType.ALL ja foi realizada a referencia na classe pagamento e aqui deve ser feito o relacionamento bidirecional(mappedBy="pedido")
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido")
 	private Pagamento pagamento;
 	
@@ -48,6 +51,11 @@ public class Pedido implements Serializable{
 		
 	}
 
+	//Pedido conhece os itens associados a ele 
+	//em ItemPedidoPK foi relaizado a associacao ManytoOne de pedido, aqui deve ser feito a associacao inversa 
+	//usando o id.pedido, onde id é da classe ItemPedido e .pedido é da classe ItemPedidoPK
+	@OneToMany(mappedBy="id.pedido")
+	private Set<ItemPedido> itens = new HashSet<>();
 	
 
 	public Pedido(Integer id, Date instante, Cliente cliente, Endereco enderecoDeEntrega
@@ -110,6 +118,15 @@ public class Pedido implements Serializable{
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
 
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
 
 
 	@Override
@@ -136,6 +153,10 @@ public class Pedido implements Serializable{
 			return false;
 		return true;
 	}
+
+
+
+	
 	
 	
 
