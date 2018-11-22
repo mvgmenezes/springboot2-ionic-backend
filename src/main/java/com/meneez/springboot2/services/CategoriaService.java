@@ -41,4 +41,10 @@ public class CategoriaService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName(), null));
 
 	}
+	
+	public Categoria insert(Categoria obj) {
+		//garantindo que é um insert pois se o id estiver preenchido o jpa trata como um update
+		obj.setId(null);
+		return repo.save(obj);
+	}
 }

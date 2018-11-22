@@ -1,11 +1,15 @@
 package com.meneez.springboot2.resources;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.meneez.springboot2.domain.Categoria;
 import com.meneez.springboot2.services.CategoriaService;
@@ -32,6 +36,17 @@ public class CategoriaResource {
 		Categoria obj = service.buscar(id);
 		return ResponseEntity.ok().body(obj);
 
+	}
+	
+	//@RequestBody - Faz o json ser convertido para o objeto java automaticamente
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@RequestBody Categoria obj){
+
+		obj = service.insert(obj);
+		//retornando a uri com o id inserido
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		//codigo 201 é retornando quando um novo recurso é inserido
+		return ResponseEntity.created(uri).build();
 	}
 
 }

@@ -34,7 +34,7 @@ public class Pedido implements Serializable{
 	
 	
 		
-	//Um para Um Pedido e Cliente
+	//Um para Um Pedido e Pagamento
 	////o id do pagamento é o mesmo id do pedido correspondente (relacionamento de 1 para 1 no banco de dados)
 	//cascade=CascadeType.ALL ja foi realizada a referencia na classe pagamento e aqui deve ser feito o relacionamento bidirecional(mappedBy="pedido")
 	//@JsonManagedReference - Pagamento pode ser serializado (evitando a referencia ciclica)
