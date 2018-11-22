@@ -10,9 +10,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.meneez.springboot2.domain.Cidade;
 import com.meneez.springboot2.domain.Cliente;
+import com.meneez.springboot2.domain.Endereco;
+import com.meneez.springboot2.domain.enums.TipoCliente;
 import com.meneez.springboot2.dto.ClienteDTO;
+import com.meneez.springboot2.dto.ClienteNewDTO;
 import com.meneez.springboot2.repositories.ClienteRepository;
+import com.meneez.springboot2.repositories.EnderecoRepository;
 import com.meneez.springboot2.services.exceptions.DataIntegrityException;
 import com.meneez.springboot2.services.exceptions.ObjectNotFoundException;
 
@@ -27,6 +32,9 @@ public class ClienteService {
 	
 	@Autowired
 	private ClienteRepository repo;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepo;
 
 	public Cliente find(Integer id) {
 		
@@ -49,6 +57,17 @@ public class ClienteService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName(), null));
 
 	}
+	
+	public Cliente insert(Cliente obj) {
+		//garantindo que é um insert pois se o id estiver preenchido o jpa trata como um update
+		obj.setId(null);
+		obj = repo.save(obj);
+		
+		//salvando os enderecos que foram setados no fromDTO
+		enderecoRepo.saveAll(obj.getEnderecos());
+		return obj;
+	}
+	
 	
 	public Cliente update(Cliente obj) {
 		//recupera os dados antes de realizar a atualizacao, pois como estou usando dto o objeto vem com alguns atributos nulos
@@ -95,6 +114,32 @@ public class ClienteService {
 	//metodo auxliar que instancia uma cagetoria a partir de um dto, usado por causa do uso do bean de validacao
 	public Cliente fromDTO(ClienteDTO objDto) {
 		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+	}
+	
+	//metodo auxliar que instancia uma cagetoria a partir de um dto, usado por causa do uso do bean de validacao
+	public Cliente fromDTO(ClienteNewDTO objDto) {
+		
+		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
+		
+		Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
+		
+		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid);
+		
+		//adicionando o endereco criado a lista de enderecos do usuario
+		cli.getEnderecos().add(end);
+		
+		//adicoonando o telefone criado a lista de telefones
+		cli.getTelefones().add(objDto.getTelefone1());
+		
+		if (objDto.getTelefone2() != null) {
+			cli.getTelefones().add(objDto.getTelefone2());
+		}
+		
+		if (objDto.getTelefone3() != null) {
+			cli.getTelefones().add(objDto.getTelefone3());
+		}
+		
+		return cli;
 	}
 	
 	//Ao utilizar o DTO alguns campos não sao passados como (CPF e Tipo) com isso se eu atualizar o banco de dados com o 

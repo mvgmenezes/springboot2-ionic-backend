@@ -1,5 +1,6 @@
 package com.meneez.springboot2.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.meneez.springboot2.domain.Cliente;
 import com.meneez.springboot2.dto.ClienteDTO;
+import com.meneez.springboot2.dto.ClienteNewDTO;
 import com.meneez.springboot2.services.ClienteService;
 
 /**
@@ -42,6 +45,22 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(obj);
 
 	}
+	
+	//@RequestBody - Faz o json ser convertido para o objeto java automaticamente
+	//incluindo um bean de validacao @Valid e alterando o Cliente por um ClienteNewDTO pois contem os mapeamentos das validacoes 
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO){
+		
+		//Convertendo o DTO para o objeto Categoria
+		Cliente obj = service.fromDTO(objDTO);
+
+		obj = service.insert(obj);
+		//retornando a uri com o id inserido
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		//codigo 201 é retornando quando um novo recurso é inserido
+		return ResponseEntity.created(uri).build();
+	}
+	
 	
 	//incluindo um bean de validacao @Valid e alterando o Cliente por um ClienteDTO pois contem os mapeamentos das validacoes 
 	@RequestMapping(value="/{id}",method=RequestMethod.PUT)
