@@ -56,10 +56,11 @@ public class CategoriaService {
 	}
 	
 	public Categoria update(Categoria obj) {
-		
-		//verifica se o id passado existe no banco
-		find(obj.getId());
-		return repo.save(obj);
+		//recupera os dados antes de realizar a atualizacao, pois como estou usando dto o objeto vem com alguns atributos nulos
+		Categoria newObj = find(obj.getId());
+		//Metodo que atualiza o objeto pesquisado na base com os dados recebidos de alteracao
+		updateData(newObj, obj);
+		return repo.save(newObj);
 	}
 	
 	public void delete(Integer id) {
@@ -99,5 +100,12 @@ public class CategoriaService {
 	//metodo auxliar que instancia uma cagetoria a partir de um dto, usado por causa do uso do bean de validacao
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+	
+	//Ao utilizar o DTO alguns campos não sao passados como id com isso se eu atualizar o banco de dados com o 
+	//objeto puramente esses valores do categoria serão setados para null
+	//com isso recupero somente as informações necessarias e atualizo.
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 }
