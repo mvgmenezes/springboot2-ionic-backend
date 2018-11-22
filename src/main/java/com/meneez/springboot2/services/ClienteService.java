@@ -21,7 +21,7 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repo;
 
-	public Cliente buscar(Integer id) {
+	public Cliente find(Integer id) {
 		
 		//Acessar os dados atraves do Repositories
 		//No Java 8 foi alterado para o objeto Optional e o nome de findOne para findById

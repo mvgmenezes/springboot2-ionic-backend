@@ -25,11 +25,11 @@ public class PedidoResource {
 	
 	//exemplo: http://localhost:8080/categorias/2
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Pedido> find(@PathVariable Integer id) {
 		
 		//Foi criado um Handler (ResourceExceptionHandler.class) que é um objeto que vai interceptar o bloco caso ocorra uma excecao,
 		//do tipo definido por mim ObjectNotFondException (caso nao encontrou nenhum objeto com o id enviado)
-		Pedido obj = service.buscar(id);
+		Pedido obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 
 	}

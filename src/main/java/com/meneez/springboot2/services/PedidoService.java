@@ -21,7 +21,7 @@ public class PedidoService {
 	@Autowired
 	private PedidoRepository repo;
 
-	public Pedido buscar(Integer id) {
+	public Pedido find(Integer id) {
 		
 		//Acessar os dados atraves do Repositories
 		//No Java 8 foi alterado para o objeto Optional e o nome de findOne para findById
