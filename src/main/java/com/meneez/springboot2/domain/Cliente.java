@@ -35,6 +35,8 @@ public class Cliente implements Serializable{
 	//private TipoCliente tipo;
 	private Integer tipo;
 	
+	
+	//Cliente 1 : 1..* Endereco(Um cliente tem 1 ou mais Endereços e um Endereço tem somente 1 cliente)
 	//um cliente tem varios endereços
 	//mappedBy="cliente" ja mapeado na classe cliente
 	//JsonManagedReference (protegendo a referencia ciclica) = liberando a serializacao de seus enderecos e protegendo a classe cliente de ter referencia ciclica com enderecos, pois o mais importante é cliente 
@@ -43,6 +45,8 @@ public class Cliente implements Serializable{
 	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
+	
+	//Cliente 0 : 1..* Telefone (Um cliente tem 1 ou mais telefones, e telefone nao tem Cliente
 	//um cliente tem varios telefones
 	//como a tabela telefone nao tem id e tem somente um campo do tipo string, considera uma entidada fraca(weak)
 	//uma solucao é nao criar uma classe Telefone e usar diretamente aqui
@@ -51,7 +55,7 @@ public class Cliente implements Serializable{
 	@CollectionTable(name="telefone")
 	private Set<String> telefones = new HashSet<>();
 	
-	
+	//Pedido N : 1 Cliente (Pedido tem um cliente e Um cliente pode ter ou nao pedidos)
 	//Clitem tem uma lista de pedidos
 	//Ja mapeado na classe cliente mappedBy="cliente"
 	//JsonBackReference - os pedidos de um cliente nao vao ser serializados no json
@@ -72,7 +76,8 @@ public class Cliente implements Serializable{
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = tipo.getCod();
+		//agora com o uso do DTO o tipo pode ser nulo, entao vou fazer uma condicional
+		this.tipo = (tipo==null) ? null : tipo.getCod();
 	}
 
 

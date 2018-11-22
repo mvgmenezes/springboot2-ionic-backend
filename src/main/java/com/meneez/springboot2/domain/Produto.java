@@ -31,6 +31,7 @@ public class Produto implements Serializable{
 	private String nome;
 	private Double preco;
 	
+	//Categoria 1..N : N Produto (Categoria pode ter ou nao produtos, mas um produto tem 1 ou mais categorias)
 	//o produto tem varias categorias
 	//como o produto tem varias categorias e categoria tem varios produtos é uma relacionamento de muitos para muitos (N : N)
 	//com isso preciso informar que é uma relacionamento de many to many

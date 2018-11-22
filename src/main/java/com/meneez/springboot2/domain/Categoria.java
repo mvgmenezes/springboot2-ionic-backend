@@ -23,6 +23,7 @@ public class Categoria implements Serializable{
 	private Integer id;
 	private String nome;
 	
+	//Categoria 1..N : N Produto (Categoria pode ter ou nao produtos, mas um produto tem 1 ou mais categorias)
 	//como o produto tem varias categorias e categoria tem varios produtos é uma relacionamento de muitos para muitos (N : N)
 	//com isso preciso informar que é uma relacionamento de many to many
 	//como na classe produto já realizei o mapeamento many to many e os joincolumns aqui somente referencio

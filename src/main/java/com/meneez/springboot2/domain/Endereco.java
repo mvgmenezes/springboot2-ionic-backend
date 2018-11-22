@@ -28,6 +28,7 @@ public class Endereco implements Serializable{
 	private String bairro;
 	private String cep;
 	
+	//Cliente 1 : 1..* Endereco(Um cliente tem 1 ou mais Endereços e um Endereço tem somente 1 cliente)
 	//endereco tem um cliente
 	//@JsonBackReference = Evitando a referencia cliclica, Enderecos não pode serializar os clientes pois os clientes podem serializar os seus enderecos. 
 	//@JsonBackReference - trocado por jsonignore pois esta anotations esta dando erro 
@@ -36,6 +37,7 @@ public class Endereco implements Serializable{
 	@JoinColumn(name="cliente_id") //nome da chave estrangeira na tabela Endereco
 	private Cliente cliente;
 	
+	//Endereco 0 : 1 Cidade (Um endereco tem uma cidade e cidade nao tem endereco)
 	@ManyToOne
 	@JoinColumn(name="cidade_id") //nome da chave estrangeira na tabela Endereco
 	private Cidade cidade;

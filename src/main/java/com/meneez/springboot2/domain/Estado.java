@@ -25,6 +25,7 @@ public class Estado implements Serializable{
 	private Integer id;
 	private String nome;
 	
+	//Cidade * : 1 Estado (Uma cidade tem somente 1 estado e um Estado tem varias cidades)
 	//o estado tem uma lista de cidades
 	//na classe que tem um objeto foi colocado a anotacao manytoone e nessa classe que tem muitos foi colocado onetomany (referencia inversa)
 	//mapear o lado inverso

@@ -33,6 +33,7 @@ public abstract class Pagamento implements Serializable {
 	private Integer id;
 	private Integer estado;
 	
+	//Pedido 1 : 1 Pagamento (Um Pedido tem Um Pagamento)	
 	//o id do pagamento é o mesmo id do pedido correspondente (relacionamento de 1 para 1 no banco de dados)
 	//@JsonBackReference - nao permitindo a serilizacao desse componente (evitando a referencia ciclica)
 	//@JsonBackReference - trocado por jsonignore pois esta anotations esta dando erro 

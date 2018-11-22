@@ -22,6 +22,7 @@ public class Cidade implements Serializable{
 	private Integer id;
 	private String nome;
 	
+	//Cidade * : 1 Estado (Uma cidade tem somente 1 estado e um Estado tem varias cidades)
 	//Cidade tem um estado (no caso de ja ser uma cidade cadastrada)
 	//ou seja Muitas cidades(many) para um estado(toOne)
 	//como é na tabela cidade que será criado a fk estado_id, aqui é o principal mapeamento

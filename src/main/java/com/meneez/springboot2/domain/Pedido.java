@@ -33,7 +33,7 @@ public class Pedido implements Serializable{
 	private Date instante;
 	
 	
-		
+	//Pedido 1 : 1 Pagamento (Um Pedido tem Um Pagamento)	
 	//Um para Um Pedido e Pagamento
 	////o id do pagamento é o mesmo id do pedido correspondente (relacionamento de 1 para 1 no banco de dados)
 	//cascade=CascadeType.ALL ja foi realizada a referencia na classe pagamento e aqui deve ser feito o relacionamento bidirecional(mappedBy="pedido")
@@ -42,6 +42,7 @@ public class Pedido implements Serializable{
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido")
 	private Pagamento pagamento;
 	
+	//Pedido N : 1 Cliente (Pedido tem um cliente e Um cliente pode ter ou nao pedidos)
 	//Relacionamento bidirecional precisa fazer a referencia em cliente
 	//Um pedido tem um cliente
 	//JsonManagedReference - (referencia ciclica) o cliente de um pedido será serailziado
@@ -50,7 +51,8 @@ public class Pedido implements Serializable{
 	@JoinColumn(name="cliente_id") //nome da chave estrangeira na tabela de Pedido
 	private Cliente cliente;
 	
-	//relacionamento DIrecional, nao tem que fazer a referencia em Endereco
+	//Pedido 0 : 1 (Um Pedido sempre tem um Endereco)
+	//relacionamento DIrecional, nao tem que fazer a referencia em Endereco, pois um Pedido que tem um endereço e Endereço nao tem relacionamento com pedido.
 	@ManyToOne
 	@JoinColumn(name="endereco_de_entrega_id")//nome da chave estrangeira na tabela de Pedido
 	private Endereco enderecoDeEntrega;
