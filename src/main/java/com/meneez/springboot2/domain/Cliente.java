@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -39,10 +40,11 @@ public class Cliente implements Serializable{
 	//Cliente 1 : 1..* Endereco(Um cliente tem 1 ou mais Endereços e um Endereço tem somente 1 cliente)
 	//um cliente tem varios endereços
 	//mappedBy="cliente" ja mapeado na classe cliente
+	//cascade=CascadeType.ALL = Toda alteracao em clientes deve ser refletido em enderecos, se for apagar o cliente vai apagar autmoamticamente os enderecos
 	//JsonManagedReference (protegendo a referencia ciclica) = liberando a serializacao de seus enderecos e protegendo a classe cliente de ter referencia ciclica com enderecos, pois o mais importante é cliente 
 	//pois cliente tem endereços. Clientes pode serializar os seus endereços, porém o Endereço não pode serializar seus clientes
 	//@JsonManagedReference - nao usado por dar bug na app, usado o jsonignore na classe de referencia somente
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy="cliente", cascade=CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
 	
 	
