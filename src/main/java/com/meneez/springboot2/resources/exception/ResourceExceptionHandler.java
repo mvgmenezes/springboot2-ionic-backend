@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -26,7 +28,7 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
 	}
 
-	//Excecao personalizada
+	//Excecao personalizada quando é tentado excluir um id com uma list de outros itens associados a esse id.
 	@ExceptionHandler(DataIntegrityException.class)
 	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException e, HttpServletRequest request){
 		
@@ -34,6 +36,23 @@ public class ResourceExceptionHandler {
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
 	}
+	
+	//Excecao personalizada quando ocorre um erro de validacao no dto (Bean Validation)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<StandardError> validation(MethodArgumentNotValidException e, HttpServletRequest request){
+		
+		//Criada uma nova classe para recuperar todos os erros do campo especifico validado.
+		ValidationError validationError = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Erro de Validação", System.currentTimeMillis());
+		
+		//percorre a lista de erros que já vem na excecao, pegando o nome do campo e a mensagem
+		
+		for(FieldError x : e.getBindingResult().getFieldErrors()) {
+			validationError.addError(x.getField(), x.getDefaultMessage());
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationError);
+	}
+	
 
 	
 }
