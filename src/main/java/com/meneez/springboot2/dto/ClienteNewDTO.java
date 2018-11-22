@@ -2,7 +2,17 @@ package com.meneez.springboot2.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.meneez.springboot2.services.validation.ClienteInsert;
+
 //classe criada para o cadastro de um novo Cliente pois endereco e telefone são obrigatorios no cadastro de um novo cliente
+
+//Anotacao criada para realizar a validacao de cpf e cnpj pelo o tipo enviado, se tipo for cpf validar o campo como cpf etc...
+@ClienteInsert
 public class ClienteNewDTO implements Serializable{
 	
 	/**
@@ -11,19 +21,31 @@ public class ClienteNewDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	//cliente
+	@NotEmpty(message="Preechimento obrigatório")
+	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
 	private String nome;
+	
+	@NotEmpty(message="Preechimento obrigatório")
+	@Email(message="Email invalido")
 	private String email;
+	
+	@NotEmpty(message="Preechimento obrigatório")
 	private String cpfOuCnpj;
 	private Integer tipo;
 	
 	//endereco
+	@NotEmpty(message="Preechimento obrigatório")
 	private String logradouro;
+	@NotEmpty(message="Preechimento obrigatório")
 	private String numero;
 	private String complemento;
+	@NotEmpty(message="Preechimento obrigatório")
 	private String bairro;
+	@NotEmpty(message="Preechimento obrigatório")
 	private String cep;
 	
 	//telefone
+	@NotEmpty(message="Preechimento obrigatório")
 	private String telefone1;
 	private String telefone2;
 	private String telefone3;
