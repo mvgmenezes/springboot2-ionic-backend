@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,6 +31,9 @@ public class Cliente implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	
+	//banco de dados garante que o email vai ser unico.
+	@Column(unique=true)
 	private String email;
 	private String cpfOuCnpj;
 	//uma outra implementacao é armazenar internamente o tipocliente como inteiro e para o mundo externo usar o Enum
