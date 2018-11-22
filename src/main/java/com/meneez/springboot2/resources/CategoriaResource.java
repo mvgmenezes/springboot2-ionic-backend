@@ -1,6 +1,9 @@
 package com.meneez.springboot2.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.meneez.springboot2.domain.Categoria;
+import com.meneez.springboot2.dto.CategoriaDTO;
 import com.meneez.springboot2.services.CategoriaService;
 
 /**
@@ -60,6 +64,23 @@ public class CategoriaResource {
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+
+		//Para que ao listar todas as categorias nao venha todos os produtos associados(no requisito é somente uma lista de 
+		//categorias) utiliza-se um DTO (objeto que tem somente os dados que eu necessite para a operacao que utilizo no sistema)
+		
+		List<Categoria> list = service.findAll();
+		
+		//convertendo um objeto Categoria para Categoria DTO, utilizo o map(que executa uma operacao para cada elemento da lista, nesse caso executa o construtor)
+		//apos isso uso o collectors para converter novamente em uma lista.
+		List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		
+		return ResponseEntity.ok().body(listDto);
+
 	}
 
 }

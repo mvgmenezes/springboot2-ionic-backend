@@ -1,5 +1,6 @@
 package com.meneez.springboot2.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +71,13 @@ public class CategoriaService {
 		}
 		
 	
+	}
+	
+	public List<Categoria> findAll() {
+		//Para que ao listar todas as categorias nao venha todos os produtos associados(no requisito é somente uma lista de 
+		//categorias) utiliza-se um DTO (objeto que tem somente os dados que eu necessite para a operacao que utilizo no sistema)
+		
+		return repo.findAll();
+		
 	}
 }
