@@ -8,7 +8,10 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.meneez.springboot2.domain.Cliente;
-
+import com.meneez.springboot2.services.validation.ClienteInsert;
+import com.meneez.springboot2.services.validation.ClienteUpdate;
+//Anotacao criada para realizar a validacao no update, se o email enviado para ser atualizado já existe em outro usuario
+@ClienteUpdate
 public class ClienteDTO implements Serializable{
 
 	/**
