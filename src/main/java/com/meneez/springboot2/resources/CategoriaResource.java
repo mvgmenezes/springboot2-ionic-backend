@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +46,12 @@ public class CategoriaResource {
 	}
 	
 	//@RequestBody - Faz o json ser convertido para o objeto java automaticamente
+	//incluindo um bean de validacao @Valid e alterando o Categoria por um CategoriaDTO pois contem os mapeamentos das validacoes 
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj){
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO){
+		
+		//Convertendo o DTO para o objeto Categoria
+		Categoria obj = service.fromDTO(objDTO);
 
 		obj = service.insert(obj);
 		//retornando a uri com o id inserido
@@ -54,8 +60,13 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	//incluindo um bean de validacao @Valid e alterando o Categoria por um CategoriaDTO pois contem os mapeamentos das validacoes 
 	@RequestMapping(value="/{id}",method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id){
+		
+		//Convertendo o DTO para o objeto Categoria
+		Categoria obj = service.fromDTO(objDTO);
+		
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
