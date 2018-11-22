@@ -3,10 +3,12 @@ package com.meneez.springboot2.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.meneez.springboot2.domain.Categoria;
 import com.meneez.springboot2.repositories.CategoriaRepository;
+import com.meneez.springboot2.services.exceptions.DataIntegrityException;
 import com.meneez.springboot2.services.exceptions.ObjectNotFoundException;
 
 /**
@@ -53,5 +55,20 @@ public class CategoriaService {
 		//verifica se o id passado existe no banco
 		find(obj.getId());
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		//verifica se o id passado existe no banco
+		find(id);
+		
+		//caso tenha produtos associados a categorias não permitir a deleção (DataIntegrityViolationException)
+		try {
+			repo.deleteById(id);
+		}catch (DataIntegrityViolationException e) {
+			//Criada uma nova excecao de servico para esse tipo
+			throw new DataIntegrityException("Não é possivel excluir uma categoria que possui produtos.");
+		}
+		
+	
 	}
 }
