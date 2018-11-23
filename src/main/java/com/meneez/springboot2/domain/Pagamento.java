@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.meneez.springboot2.domain.enums.EstadoPagamento;
 
 //@Inheritance = mapeando a heranca, pode ser realizado de duas maneira:
@@ -18,8 +19,11 @@ import com.meneez.springboot2.domain.enums.EstadoPagamento;
 //itens um objeto vem preenchido e o outro null - (Usado quando tem poucos atributos na subclasse)
 //2 - InheritanceType.JOINED - Outra estrategia é criar no banco de dados uma tabela para cada subclasse, uma tabela de Pagamento, uma tabela de PagamentoComBoleto e
 //uma tabela de PagamentoComCartao e quando pesquisar os pagamento deve ser feito o join das tabelas - (Usado quando tem muitos atribuitos na subclasse)
+//@JsonTypeInfo como é uma classe abstrada preciso permitir a instanciacao de subclasses a partir dojson para incluir um tipo de pagamento, 
+//essa anotacao informa que a minha classe vai ter um campo adicional com o nome @type, Quando for enviar um objeto do tipo da superclasse (Pagamento), inclua o campo adicional para indicar qual das subclasses deve ser instanciada:
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Pagamento implements Serializable {
 //classe definida como abstract para garantir que nao se possa instanciar uma classe do tipo pagamento e somente 
 //suas subclasses

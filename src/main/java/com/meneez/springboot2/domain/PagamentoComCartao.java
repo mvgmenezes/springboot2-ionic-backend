@@ -2,9 +2,12 @@ package com.meneez.springboot2.domain;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.meneez.springboot2.domain.enums.EstadoPagamento;
 
+//@JsonTypeName - Na classe pagamento (abstrata) foi definido um novo campo @type, nessa classe que herda a classe deve ser informado o valor do @type
 @Entity
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento{
 	
 	/**
