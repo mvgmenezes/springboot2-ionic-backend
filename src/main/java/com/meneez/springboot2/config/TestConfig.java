@@ -30,7 +30,7 @@ public class TestConfig {
 	
 	
 	//Bean criado para retornar uma instancia do MockEmailService quando chamado a interface em PedidoService, o Autowired vai procurar
-	//uma instancia da interface e vai encontrar esse bean declarado.
+	//uma instancia da interface e vai encontrar esse bean declarado, para o profile=test.
 	@Bean
 	public EmailService emailService() {
 		return new MockEmailService();
