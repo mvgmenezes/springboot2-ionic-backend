@@ -3,6 +3,8 @@ package com.meneez.springboot2.services;
 import java.util.Date;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,6 @@ import com.meneez.springboot2.domain.enums.EstadoPagamento;
 import com.meneez.springboot2.repositories.ItemPedidoRepository;
 import com.meneez.springboot2.repositories.PagamentoRepository;
 import com.meneez.springboot2.repositories.PedidoRepository;
-import com.meneez.springboot2.repositories.ProdutoRepository;
 import com.meneez.springboot2.services.exceptions.ObjectNotFoundException;
 
 /**
@@ -36,6 +37,9 @@ public class PedidoService {
 	
 	@Autowired
 	private ProdutoService produtoService;
+	
+	@Autowired
+	private ClienteService clienteService;
 	
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
@@ -62,9 +66,14 @@ public class PedidoService {
 	}
 	
 	//Inserindo um pedido
+	@Transactional
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);
 		obj.setInstante(new Date());
+		
+		//buscando todos os dados do cliente pelo id passado
+		obj.setCliente(clienteService.find(obj.getCliente().getId()));
+		
 		//insere como pendemte
 		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		//fazendo a associacao de mao dupla o pagamento tem que conhecer o seu pedido
@@ -87,12 +96,15 @@ public class PedidoService {
 		//salvando os itens de pedido
 		for(ItemPedido item :obj.getItens()) {
 			item.setDesconto(0.0);
-			//busca o preco atraves do id
-			item.setPreco(produtoService.find(item.getProduto().getId()).getPreco());
+			//busca o produto atraves do id
+			item.setProduto(produtoService.find(item.getProduto().getId()));
+		
+			item.setPreco(item.getProduto().getPreco());
 			item.setPedido(obj);
 		}
 		
 		itemPedidoRepository.saveAll(obj.getItens());
+		System.out.println(obj);
 		return obj;
 	}
 }
