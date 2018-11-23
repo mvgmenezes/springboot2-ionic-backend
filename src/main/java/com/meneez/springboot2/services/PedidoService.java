@@ -15,6 +15,7 @@ import com.meneez.springboot2.domain.enums.EstadoPagamento;
 import com.meneez.springboot2.repositories.ItemPedidoRepository;
 import com.meneez.springboot2.repositories.PagamentoRepository;
 import com.meneez.springboot2.repositories.PedidoRepository;
+import com.meneez.springboot2.services.email.EmailService;
 import com.meneez.springboot2.services.exceptions.ObjectNotFoundException;
 
 /**
@@ -43,6 +44,9 @@ public class PedidoService {
 	
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	
+	@Autowired
+	private EmailService emailService;
 
 	public Pedido find(Integer id) {
 		
@@ -104,6 +108,9 @@ public class PedidoService {
 		}
 		
 		itemPedidoRepository.saveAll(obj.getItens());
+		
+		//enviando email sobre o pedido
+		emailService.sendOrderConfirmationEmail(obj);
 		System.out.println(obj);
 		return obj;
 	}
