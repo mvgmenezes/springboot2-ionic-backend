@@ -79,7 +79,15 @@ public class Pedido implements Serializable{
 		//this.pagamento = pagamento;
 	}
 
-
+	//criando um metodo para calcular o total do pedido, ao utilizar o 'get'na frente do metodo o json será apresentado 
+	public double getValorTotal() {
+		double soma = 0.0;
+		for (ItemPedido ip : itens){
+			soma = soma + ip.getSubTotal();
+		}
+		return soma;
+		
+	}
 
 	public Integer getId() {
 		return id;
