@@ -27,7 +27,7 @@ public class DevConfig {
 	public boolean instanciateDatabase() throws ParseException {
 		
 		//verifico se a chave spring.jpa.hibernate.ddl-auto=create dentro do application-dev.properties 
-		//esta marcada como create para executar a instancia inicial
+		//se esta marcada como create irei executar o carregamento das informacoes basicas
 		if (!"create".equals(strategy)) {
 			return false;
 		}else {
