@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.meneez.springboot2.security.JWTAuthenticationFilter;
+import com.meneez.springboot2.security.JWTAuthorizationFilter;
 import com.meneez.springboot2.security.JWTUtil;
 
 
@@ -70,8 +71,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated();
 		
-		//usando o filter
+		//usando o filter para validar se o usuario e senha sao validos
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jWTUtil));
+		//usando o filter para validar se o token é valido
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jWTUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
