@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +48,8 @@ public class CategoriaResource {
 	
 	//@RequestBody - Faz o json ser convertido para o objeto java automaticamente
 	//incluindo um bean de validacao @Valid e alterando o Categoria por um CategoriaDTO pois contem os mapeamentos das validacoes 
+	//somente quem for admin pode acessar esse endpoint
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO){
 		
@@ -61,6 +64,8 @@ public class CategoriaResource {
 	}
 	
 	//incluindo um bean de validacao @Valid e alterando o Categoria por um CategoriaDTO pois contem os mapeamentos das validacoes 
+	//somente quem for admin pode acessar esse endpoint
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}",method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id){
 		
@@ -72,6 +77,8 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	//somente quem for admin pode acessar esse endpoint
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);

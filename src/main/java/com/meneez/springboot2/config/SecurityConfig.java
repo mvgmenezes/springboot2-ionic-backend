@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -25,9 +26,10 @@ import com.meneez.springboot2.security.JWTUtil;
 
 
 //implementando o JWT 
-
+//@EnableGlobalMethodSecurity(prePostEnabled = true) permite autorizar o endpoint para alguns perfis especificos 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	//para liberar o acesso do browser ao repositorio h2
@@ -49,7 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	//acesso publico para somente recuperar os dados (GET) e nao para fazer o post e put
 	private static final String[] PUBLIC_MATCHERS_GET = {
 			"/produtos/**",
-			"/categorias/**",
+			"/categorias/**"
+	};
+	
+	//acesso publico para o cadatro (POST) (exemplo: usuario se cadastrar)
+	private static final String[] PUBLIC_MATCHERS_POST = {
 			"/clientes/**"
 	};
 	
@@ -67,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable();
 		//libera o acesso para as urls publicas e para os outros solicita autenticacao
 		http.authorizeRequests()
+			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_POST).permitAll()
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated();
