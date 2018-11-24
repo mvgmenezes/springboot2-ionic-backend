@@ -5,18 +5,22 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.meneez.springboot2.domain.enums.Perfil;
 import com.meneez.springboot2.domain.enums.TipoCliente;
 
 @Entity
@@ -61,8 +65,14 @@ public class Cliente implements Serializable{
 	//uma solucao é nao criar uma classe Telefone e usar diretamente aqui
 	//para o JPA criar a tabela telefone como uma entidade fraca deve usar a anotacao ElementeCollection
 	@ElementCollection
-	@CollectionTable(name="telefone")
+	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
+	
+	
+	//fetch=FetchType.EAGER - indica que sempre que ocorrer uma consulta deve tranzer esses campos
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
 	
 	//Pedido N : 1 Cliente (Pedido tem um cliente e Um cliente pode ter ou nao pedidos)
 	//Clitem tem uma lista de pedidos
@@ -75,7 +85,8 @@ public class Cliente implements Serializable{
 	
 	
 	public Cliente() {
-		
+		//todo usuario ao ser criado,já é criado como cliente como default
+		addPerfil(Perfil.CLIENTE);
 	}
 
 
@@ -88,6 +99,8 @@ public class Cliente implements Serializable{
 		//agora com o uso do DTO o tipo pode ser nulo, entao vou fazer uma condicional
 		this.tipo = (tipo==null) ? null : tipo.getCod();
 		this.senha = senha;
+		//todo usuario ao ser criado,já é criado como cliente como default
+		addPerfil(Perfil.CLIENTE);
 	}
 
 
@@ -149,6 +162,13 @@ public class Cliente implements Serializable{
 		this.senha = senha;
 	}
 
+	public Set<Perfil> getPerfis(){
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
+	}
 	public List<Endereco> getEnderecos() {
 		return enderecos;
 	}

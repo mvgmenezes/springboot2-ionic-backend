@@ -36,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	//acesso publico para somente recuperar os dados (GET) e nao para fazer o post e put
 	private static final String[] PUBLIC_MATCHERS_GET = {
 			"/produtos/**",
-			"/categorias/**"		
+			"/categorias/**",
+			"/clientes/**"
 	};
 	
 	@Override
