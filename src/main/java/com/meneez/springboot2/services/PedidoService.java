@@ -110,7 +110,7 @@ public class PedidoService {
 		itemPedidoRepository.saveAll(obj.getItens());
 		
 		//enviando email sobre o pedido
-		emailService.sendOrderConfirmationEmail(obj);
+		emailService.sendOrderConfirmationHtmlEmail(obj);
 		System.out.println(obj);
 		return obj;
 	}
