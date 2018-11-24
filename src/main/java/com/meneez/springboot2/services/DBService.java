@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.meneez.springboot2.domain.Categoria;
@@ -59,6 +60,9 @@ public class DBService {
 	
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 
 	//methodo para inicializar o banco de daods com informacoes pre cadastradas, chamada somente no profile test.
 	public void instantiateTestDatabase() throws ParseException {
@@ -130,7 +134,7 @@ public class DBService {
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
 		//Criando o cliente e seus enderecos
-		Cliente cli1 = new Cliente(null, "Maria Silva", "mvgmenezes@gmail.com","123123123", TipoCliente.PESSOAFISICA);
+		Cliente cli1 = new Cliente(null, "Maria Silva", "mvgmenezes@gmail.com","123123123", TipoCliente.PESSOAFISICA, pe.encode("123"));
 		
 		cli1.getTelefones().addAll(Arrays.asList("22222333", "988899889"));
 		

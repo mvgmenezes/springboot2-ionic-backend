@@ -40,6 +40,9 @@ public class Cliente implements Serializable{
 	//private TipoCliente tipo;
 	private Integer tipo;
 	
+	//@JsonIgnore nao apresentar o decrypt da senha no retorno de um json
+	@JsonIgnore
+	private String senha;
 	
 	//Cliente 1 : 1..* Endereco(Um cliente tem 1 ou mais Endereços e um Endereço tem somente 1 cliente)
 	//um cliente tem varios endereços
@@ -76,7 +79,7 @@ public class Cliente implements Serializable{
 	}
 
 
-	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
+	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -84,6 +87,7 @@ public class Cliente implements Serializable{
 		this.cpfOuCnpj = cpfOuCnpj;
 		//agora com o uso do DTO o tipo pode ser nulo, entao vou fazer uma condicional
 		this.tipo = (tipo==null) ? null : tipo.getCod();
+		this.senha = senha;
 	}
 
 
@@ -136,6 +140,14 @@ public class Cliente implements Serializable{
 		this.tipo = tipo.getCod();
 	}
 
+	public String getSenha() {
+		return senha;
+	}
+
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 
 	public List<Endereco> getEnderecos() {
 		return enderecos;
@@ -190,6 +202,9 @@ public class Cliente implements Serializable{
 			return false;
 		return true;
 	}
+
+
+	
 
 
 	
